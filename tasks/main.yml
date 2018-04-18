@@ -1,0 +1,21 @@
+---
+# tasks file for git-gui-tools
+- name: install gitg and meld
+  apt:
+    name: "{{ item }}"
+    install_recommends: yes
+    update_cache: yes
+    cache_valid_time: 3600
+    autoclean: yes
+    autoremove: yes
+  become: yes
+  with_items:
+    - gitg
+    - meld
+  when: ansible_pkg_mgr == 'apt'
+
+- name: git mergetool
+  git_config:
+    name: mergetool.cmd
+    scope: global
+    value: meld $LOCAL $MERGED $REMOTE
